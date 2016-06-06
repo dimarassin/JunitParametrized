@@ -8,25 +8,24 @@ Allows parametrized tests with JUnit in a non static way (TestNG style)
 - ParametrizedPowerMockRunner
 
 # Example
-`@RunWith(ParametrizedRunner.class)
- public class ParametrizedRunnerTest {
+     @RunWith(ParametrizedRunner.class)
+     public class ParametrizedRunnerTest {
  
-     @Test
-     public void regularJunitTest() {
-         assertTrue(true);
-     }
- 
-     public Object[][] singleStringData() {
-         return new Object[][]{
-                 {"val1"},
-                 {"val2"},
-                 {"val3"},
-         };
-     }
- 
-     @ParametrizedTest("singleStringData")
-     public void singleString(String val) {
-         System.out.println("Val: " + val);
-     }
- }
-`
+         @Test
+         public void regularJunitTest() {
+             assertTrue(true);
+         }
+     
+         public Object[][] singleStringData() {
+             return new Object[][]{
+                     {"val1"},
+                     {"val2"},
+                     {"val3"},
+             };
+         }
+     
+         @ParametrizedTest("singleStringData")
+         public void singleString(String val) {
+             System.out.println("Val: " + val);
+         }
+    }
