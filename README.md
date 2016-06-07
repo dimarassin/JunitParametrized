@@ -1,15 +1,15 @@
-# JunitParametrized
-Allows parametrized tests with JUnit in a non static way (TestNG style)
+# JunitParameterized
+Allows parameterized tests with JUnit in a non static way (TestNG style)
 
 # Supported Runners
-- ParametrizedRunner
-- ParametrizedSpringRunner
-- ParametrizedMockitoRunner
-- ParametrizedPowerMockRunner
+- ParameterizedRunner
+- ParameterizedSpringRunner
+- ParameterizedMockitoRunner
+- ParameterizedPowerMockRunner
 
 # Example
      @RunWith(ParametrizedRunner.class)
-     public class ParametrizedRunnerTest {
+     public class ParameterizedRunnerTest {
  
          @Test
          public void regularJunitTest() {

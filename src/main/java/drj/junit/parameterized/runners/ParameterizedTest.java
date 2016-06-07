@@ -1,4 +1,4 @@
-package drj.junit.parametrized.runners;
+package drj.junit.parameterized.runners;
 
 import org.junit.Test;
 import org.springframework.core.annotation.AliasFor;
@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
-public @interface ParametrizedTest {
+public @interface ParameterizedTest {
 
     @AliasFor("dataProvider")
     String value() default "";

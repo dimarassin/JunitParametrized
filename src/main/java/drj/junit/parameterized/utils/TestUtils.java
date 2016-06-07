@@ -1,4 +1,4 @@
-package drj.junit.parametrized.utils;
+package drj.junit.parameterized.utils;
 
 import java.lang.reflect.Method;
 
