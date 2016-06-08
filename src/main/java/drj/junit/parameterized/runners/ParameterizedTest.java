@@ -1,7 +1,6 @@
 package drj.junit.parameterized.runners;
 
 import org.junit.Test;
-import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,10 +11,8 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 public @interface ParameterizedTest {
 
-    @AliasFor("dataProvider")
     String value() default "";
 
-    @AliasFor("value")
     String dataProvider() default "";
 
     Class<? extends Throwable> expected() default Test.None.class;
