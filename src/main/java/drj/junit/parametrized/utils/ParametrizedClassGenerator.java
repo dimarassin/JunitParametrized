@@ -1,6 +1,6 @@
-package drj.junit.parameterized.utils;
+package drj.junit.parametrized.utils;
 
-import drj.junit.parameterized.runners.ParameterizedTest;
+import drj.junit.parametrized.runners.ParametrizedTest;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class ParameterizedClassGenerator {
+public class ParametrizedClassGenerator {
 
     public static Class<?> createParametrizedClass(Class<?> testClass) {
         List<Method> parametrizedTests = resolveParametrizedTests(testClass);
@@ -26,7 +26,7 @@ public class ParameterizedClassGenerator {
 
     private static List<Method> resolveParametrizedTests(Class<?> testClass) {
         return Arrays.stream(testClass.getDeclaredMethods())
-                .filter(m -> m.isAnnotationPresent(ParameterizedTest.class))
+                .filter(m -> m.isAnnotationPresent(ParametrizedTest.class))
                 .collect(Collectors.toList());
     }
 
@@ -79,7 +79,7 @@ public class ParameterizedClassGenerator {
     }
 
     private static String resolveDataProvider(Method test) {
-        return test.getAnnotation(ParameterizedTest.class).value();
+        return test.getAnnotation(ParametrizedTest.class).value();
     }
 
     private static int calculatePermutations(Object testInst, String dataProviderName) {

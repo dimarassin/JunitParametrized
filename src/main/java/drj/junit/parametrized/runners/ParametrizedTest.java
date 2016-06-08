@@ -1,4 +1,4 @@
-package drj.junit.parameterized.runners;
+package drj.junit.parametrized.runners;
 
 import org.junit.Test;
 
@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
-public @interface ParameterizedTest {
+public @interface ParametrizedTest {
 
     String value() default "";
 

@@ -1,4 +1,4 @@
-package drj.junit.parameterized.runners;
+package drj.junit.parametrized.runners;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -9,8 +9,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-@RunWith(ParameterizedRunner.class)
-public class ParameterizedRunnerTest {
+@RunWith(ParametrizedRunner.class)
+public class ParametrizedRunnerTest {
 
     @Rule
     public TestName name = new TestName();
@@ -28,7 +28,7 @@ public class ParameterizedRunnerTest {
         };
     }
 
-    @ParameterizedTest("singleStringData")
+    @ParametrizedTest("singleStringData")
     public void singleString(String val) {
         System.out.println(name.getMethodName() + ": " + val);
     }
@@ -40,7 +40,7 @@ public class ParameterizedRunnerTest {
         };
     }
 
-    @ParameterizedTest("primitiveData")
+    @ParametrizedTest("primitiveData")
     public void primitives(int val1, long val2, boolean expected) {
         System.out.println(String.format("%s: %d < %d => %b", name.getMethodName(), val1, val2, expected));
         assertThat(val1 < val2, is(expected));
