@@ -2,7 +2,6 @@ package drj.junit.parametrized.utils;
 
 import drj.junit.parametrized.runners.ParametrizedTest;
 import org.apache.commons.io.FileUtils;
-import org.junit.Test;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
@@ -13,7 +12,8 @@ import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+
+import static drj.junit.parametrized.utils.ParametrizedMethodGenerator.createMethod;
 
 public class ParametrizedClassGenerator {
 
@@ -21,7 +21,6 @@ public class ParametrizedClassGenerator {
         List<Method> parametrizedTests = resolveParametrizedTests(testClass);
 
         return parametrizedTests.isEmpty() ? testClass : createParametrizedClass(testClass, parametrizedTests);
-
     }
 
     private static List<Method> resolveParametrizedTests(Class<?> testClass) {
@@ -53,41 +52,23 @@ public class ParametrizedClassGenerator {
         StringBuilder source = new StringBuilder("public class ").append(testClass.getSimpleName())
                 .append(" extends ").append(testClass.getName()).append("{");
 
-        Object testInst = testClass.newInstance();
-
-        parametrizedTests.forEach(test -> appendTest(source, testInst, test));
+        parametrizedTests.forEach(test -> source.append(createMethod(test, calculatePermutations(testClass, test))));
 
         source.append("\n}");
 
         return source.toString();
     }
 
-    private static void appendTest(StringBuilder source, Object testInst, Method test) {
-        String dataProvider = resolveDataProvider(test);
-        int permutations = calculatePermutations(testInst, dataProvider);
-
-        IntStream.range(0, permutations).forEach(p ->
-                source.append("\n@").append(Test.class.getName())
-                        .append("\npublic void ").append(test.getName()).append("_").append(p).append("() throws Exception {")
-                        .append("\n\t").append(TestUtils.class.getName())
-                        .append('.').append("resolveMethod(this, \"").append(test.getName())
-                        .append("\", \"")
-                        .append(Arrays.toString(test.getParameterTypes()))
-                        .append("\").invoke(this, ").append(dataProvider).append("()[").append(p).append("]);")
-                        .append("\n}")
-        );
+    private static int calculatePermutations(Class<?> testClass, Method test) {
+        try {
+            Method dataProvider = testClass.getDeclaredMethod(resolveDataProvider(test));
+            return ((Object[][]) dataProvider.invoke(testClass.newInstance())).length;
+        } catch (Exception ex) {
+            throw new IllegalStateException("Failed to ");
+        }
     }
 
     private static String resolveDataProvider(Method test) {
         return test.getAnnotation(ParametrizedTest.class).value();
-    }
-
-    private static int calculatePermutations(Object testInst, String dataProviderName) {
-        try {
-            Method dataProvider = testInst.getClass().getDeclaredMethod(dataProviderName);
-            return ((Object[][]) dataProvider.invoke(testInst)).length;
-        } catch (Exception ex) {
-            throw new IllegalStateException("Failed to ");
-        }
     }
 }

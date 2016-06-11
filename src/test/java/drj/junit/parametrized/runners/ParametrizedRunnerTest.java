@@ -1,5 +1,6 @@
 package drj.junit.parametrized.runners;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -7,6 +8,7 @@ import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static org.hamcrest.core.Is.is;
 
 @RunWith(ParametrizedRunner.class)
@@ -44,5 +46,11 @@ public class ParametrizedRunnerTest {
     public void primitives(int val1, long val2, boolean expected) {
         System.out.println(String.format("%s: %d < %d => %b", name.getMethodName(), val1, val2, expected));
         assertThat(val1 < val2, is(expected));
+    }
+
+    @ParametrizedTest("primitiveData")
+    @Ignore
+    public void ignoredTest(int val1, long val2, boolean expected){
+        fail("This should not run");
     }
 }
