@@ -10,38 +10,45 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class ParametrizedMethodGenerator {
+class ParametrizedMethodGenerator {
 
-    public static String createMethod(Method test, int permutations) {
+    static String createMethod(Method test, int permutations) {
         StringBuilder source = new StringBuilder();
 
         IntStream.range(0, permutations).forEach(p ->
-                source.append("\n@").append(Test.class.getName())
+                source.append("\n")
                         .append(resolveAnnotations(test))
-                        .append("\npublic void ").append(test.getName()).append("_").append(p).append("() throws Exception {")
-                        .append("\n\t").append(TestUtils.class.getName())
+                        .append("\tpublic void ").append(test.getName()).append("_").append(p).append("() throws Exception {")
+                        .append("\n\t\t").append(TestUtils.class.getName())
                         .append('.').append("resolveMethod(this, \"").append(test.getName())
                         .append("\", \"")
                         .append(Arrays.toString(test.getParameterTypes()))
                         .append("\").invoke(this, ").append(resolveDataProvider(test)).append("()[").append(p).append("]);")
-                        .append("\n}")
+                        .append("\n\t}")
         );
 
         return source.toString();
     }
 
     private static String resolveAnnotations(Method test) {
-        StringBuilder source = new StringBuilder();
+        return createTestAnnotation(test) +
+                Arrays.stream(test.getDeclaredAnnotations())
+                        .filter(a -> a.annotationType() != ParametrizedTest.class)
+                        .map(ParametrizedMethodGenerator::resolveAnnotation)
+                        .collect(Collectors.joining());
 
-        Arrays.stream(test.getDeclaredAnnotations())
-                .filter(a -> a.annotationType() != Test.class)
-                .forEach(a -> source.append("\n@")
-                        .append(a.annotationType().getName())
-                        .append("(")
-                        .append(resolveAnnotationValues(a))
-                        .append(")"));
+    }
 
-        return source.toString();
+    private static String createTestAnnotation(Method test) {
+        ParametrizedTest pt = test.getAnnotation(ParametrizedTest.class);
+        return String.format("\t@%s(expected=%s.class, timeout=%d)\n",
+                Test.class.getName(),
+                pt.expected().getCanonicalName(),
+                pt.timeout());
+    }
+
+    private static String resolveAnnotation(Annotation annotation) {
+        return String.format("\t@%s(%s)\n", annotation.annotationType().getCanonicalName(), resolveAnnotationValues(annotation));
     }
 
     private static String resolveAnnotationValues(Annotation annotation) {

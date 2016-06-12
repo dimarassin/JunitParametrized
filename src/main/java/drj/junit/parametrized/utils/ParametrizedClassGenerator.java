@@ -49,12 +49,14 @@ public class ParametrizedClassGenerator {
     }
 
     private static String createSource(Class<?> testClass, List<Method> parametrizedTests) throws Exception {
-        StringBuilder source = new StringBuilder("public class ").append(testClass.getSimpleName())
-                .append(" extends ").append(testClass.getName()).append("{");
+        StringBuilder source = new StringBuilder("public class ")
+                .append(testClass.getSimpleName())
+                .append(" extends ")
+                .append(testClass.getName()).append("{\n");
 
-        parametrizedTests.forEach(test -> source.append(createMethod(test, calculatePermutations(testClass, test))));
+        parametrizedTests.forEach(test -> source.append(createMethod(test, calculatePermutations(testClass, test))).append('\n'));
 
-        source.append("\n}");
+        source.append("}");
 
         return source.toString();
     }
