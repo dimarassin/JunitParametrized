@@ -16,8 +16,7 @@ class ParametrizedMethodGenerator {
         StringBuilder source = new StringBuilder();
 
         IntStream.range(0, permutations).forEach(p ->
-                source.append("\n")
-                        .append(resolveAnnotations(test))
+                source.append(resolveAnnotations(test))
                         .append("\tpublic void ").append(test.getName()).append("_").append(p).append("() throws Exception {")
                         .append("\n\t\t").append(TestUtils.class.getName())
                         .append('.').append("resolveMethod(this, \"").append(test.getName())
@@ -41,7 +40,7 @@ class ParametrizedMethodGenerator {
 
     private static String createTestAnnotation(Method test) {
         ParametrizedTest pt = test.getAnnotation(ParametrizedTest.class);
-        return String.format("\t@%s(expected=%s.class, timeout=%d)\n",
+        return String.format("\n\t@%s(expected=%s.class, timeout=%d)\n",
                 Test.class.getName(),
                 pt.expected().getCanonicalName(),
                 pt.timeout());
