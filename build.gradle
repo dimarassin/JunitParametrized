@@ -1,4 +1,4 @@
-group 'drjp.junit'
+group 'drj.junit'
 version = '0.1.0'
 
 repositories {
@@ -11,8 +11,8 @@ dependencies {
     compile 'org.apache.commons:commons-io:+',
             'junit:junit:+',
             'org.mockito:mockito-core:+',
-            'org.springframework:spring-test:+',
-            'org.powermock:powermock-module-junit4:+'
+            'org.powermock:powermock-module-junit4:+',
+            'org.springframework:spring-test:+'
 
     testCompile 'org.hamcrest:hamcrest-all:+'
 }
